@@ -17,8 +17,8 @@ function App() {
             setLoading(true)
             try{
                 const res = await axios.get('https://ligabot.onrender.com/city/findAll')
-                setCities(res.cities)
-                console.log(cities)
+                setCities(res.data.cities)
+                console.log(cities,res)
                 setSuccess(true)
             }catch (e){
                 setError(JSON.stringify(e,null,2))

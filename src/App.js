@@ -1,11 +1,37 @@
 import './App.css';
 import {useEffect, useState} from "react";
 import {useTelegram} from "./hooks/useTelegram";
+import axios from "axios";
 
 function App() {
+    const [isLoading, setLoading] = useState(false)
+    const [isSuccess, setSuccess] = useState(false)
+    const [error,setError] = useState('')
+    const [cities, setCities] = useState([])
+
+
+    useEffect(() => {
+
+        const fetchData = async ()=>{
+
+            setLoading(true)
+            try{
+                const res = await axios.get('https://ligabot.onrender.com/city/findAll')
+                setCities(res.cities)
+                setSuccess(true)
+            }catch (e){
+                setError(JSON.stringify(e,null,2))
+            }finally {
+                setLoading(false)
+            }
+
+        }
+        fetchData()
+        tg.ready()
+    }, [])
     const {tg, user, onClose} = useTelegram()
     const [type, setType] = useState('buy')
-    const [city, setCity] = useState('kyiv')
+    const [city, setCity] = useState()
     const [amount, setAmount] = useState(10)
     const [isPartly, setIsPartly] = useState(0)
     const [percent, setPercent] = useState(10)
@@ -20,9 +46,7 @@ function App() {
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
 
-    useEffect(() => {
-        tg.ready()
-    }, [])
+
     return (
         <div className="App">
             <h1>Нове Оголошення</h1>
@@ -41,8 +65,11 @@ function App() {
 
                     <select className={'select select_city'} onChange={handleChangeCity} defaultValue={city} name="city"
                             id="city">
-                        <option value="Kyiv">Київ</option>
-                        <option value="Lviv">Львів</option>
+                        {
+                            isSuccess && !isLoading ? cities.map(city=>(
+                                <option value={city._id}>{city.name}</option>
+                            )) : null
+                        }
                     </select>
                 </div>
 
@@ -101,6 +128,11 @@ function App() {
                 }, null, 2) : '-'}
             </p>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
+            <p>
+                {
+                    error.length ? error : ''
+                }
+            </p>
         </div>
     );
 }

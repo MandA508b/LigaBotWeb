@@ -42,7 +42,6 @@ label{
 }
 .select, input,textarea{
   padding: 7px 40px 7px 12px;
-  width: 200px;
   border: 1px solid var(--tg-theme-button-color);
   border-radius: 5px;
   background: white;

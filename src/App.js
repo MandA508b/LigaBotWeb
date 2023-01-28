@@ -66,7 +66,7 @@ function App() {
                 </div>
 
                 {
-                    isPartly ?
+                    !!isPartly ?
 
                             <input  type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                         : null

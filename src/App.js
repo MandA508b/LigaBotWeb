@@ -66,8 +66,8 @@ function App() {
                     <select className={'select select_city'} onChange={handleChangeCity} defaultValue={city} name="city"
                             id="city">
                         {
-                            isSuccess && !isLoading ? cities.map(city=>(
-                                <option value={city._id}>{city.name}</option>
+                            isSuccess && !isLoading ? cities?.map(city=>(
+                                <option value={city?._id}>{city?.name}</option>
                             )) : null
                         }
                     </select>

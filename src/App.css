@@ -3,9 +3,67 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+  max-width: fit-content;
 
-button{
+}
+body{
+  font-family: 'Roboto', sans-serif;
+}
+.App{
+  min-width:100vw;
+  min-height:100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:10px;
+  background: var(--tg-theme-bg-color);
+}
+.container{
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+.close_btn{
+  font-size: 22px;
+  border-radius: 4px;
+  padding: 8px 16px;
   color:var(--tg-theme-button-text-color);
   background: var(--tg-theme-button-color);
+}
+.select, input,textarea{
+  padding: 7px 40px 7px 12px;
+  width: 200px;
+  border: 1px solid #E8EAED;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 1px 3px -2px #9098A9;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  transition: all 150ms ease;
+}
+.select option{
+  max-width: 200px;
+}
+
+
+
+
+
+
+
+
+
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../LigaBot/.idea/LigaBot.iml" filepath="$PROJECT_DIR$/../LigaBot/.idea/LigaBot.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/LigaBotWeb.iml" filepath="$PROJECT_DIR$/.idea/LigaBotWeb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../undriy/simple-analytic-service/.idea/simple-analytic-service.iml" filepath="$PROJECT_DIR$/../undriy/simple-analytic-service/.idea/simple-analytic-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ttm/.idea/ttm.iml" filepath="$PROJECT_DIR$/../ttm/.idea/ttm.iml" />
     </modules>
   </component>
 </project>

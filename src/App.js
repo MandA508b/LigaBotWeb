@@ -28,7 +28,7 @@ function App() {
             <h1>Нове Оголошення</h1>
             <div className="container">
                 <div className={'form_container'}>
-                    <label htmlFor="type">Тип Оголошення</label>
+                    <label htmlFor="type">Тип</label>
                     <select className={'select select_type'} onChange={handleChangeType} defaultValue={type} name="type"
                             id="type">
                         <option value="sell">Продаж</option>

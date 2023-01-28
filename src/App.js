@@ -25,45 +25,80 @@ function App() {
     }, [])
     return (
         <div className="App">
+            <h1>Нове Оголошення</h1>
             <div className="container">
-                <select className={'select select_type'} onChange={handleChangeType} defaultValue={type} name="type"
-                        id="type">
-                    <option value="sell">Продаж</option>
-                    <option value="buy">Купівля</option>
-                </select>
-                <select className={'select select_city'} onChange={handleChangeCity} defaultValue={city} name="city"
-                        id="city">
-                    <option value="Kyiv">Київ</option>
-                    <option value="Lviv">Львів</option>
-                </select>
+                <div className={'form_container'}>
+                    <label htmlFor="type">Тип Оголошення</label>
+                    <select className={'select select_type'} onChange={handleChangeType} defaultValue={type} name="type"
+                            id="type">
+                        <option value="sell">Продаж</option>
+                        <option value="buy">Купівля</option>
+                    </select>
+                </div>
+                <div className="form_container">
+
+                    <label htmlFor="city">Місто</label>
+
+                    <select className={'select select_city'} onChange={handleChangeCity} defaultValue={city} name="city"
+                            id="city">
+                        <option value="Kyiv">Київ</option>
+                        <option value="Lviv">Львів</option>
+                    </select>
+                </div>
+
+            </div>
+            <div className="form_container">
+                <label htmlFor="amount">Ціна, $</label>
+
+                <input name={'amount'} type="number" value={amount} onChange={handleChangeAmount}/>
+
             </div>
 
-            <input type="number" value={amount} onChange={handleChangeAmount}/>
-
             <div className={'container'}>
-                <select className={'select select_ispartly'} onChange={handleChangeIsPartly} defaultValue={isPartly}>
-                    <option value={0}>Одною</option>
-                    <option value={1}>Частинами</option>
-                </select>
+                <div className="form_container">
+                    <label htmlFor="isPartly">Частинами?</label>
+
+                    <select name={'isPartly'} className={'select select_ispartly'} onChange={handleChangeIsPartly}
+                            defaultValue={isPartly}>
+                        <option value={0}>Одною</option>
+                        <option value={1}>Частинами</option>
+                    </select>
+                </div>
+
                 {
                     isPartly ?
-                        <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+
+                            <input  type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                         : null
                 }
             </div>
-            <input type="number" value={percent} onChange={handleChangePercent}/>
-            <select className={'select select_deadline'} onChange={handleChangeDeadline} defaultValue={deadline}>
-                <option value={'1h'}>Година</option>
-                <option value={'todayend'}>До Кінця Дня</option>
-                <option value={'48h'}>48 Годин</option>
-                <option value={'72h'}>78 Годин</option>
-            </select>
-            <textarea cols="30" rows="4" value={additionalInfo} onChange={handleChangeAdditionalInfo}/>
-            <button className={'close_btn'} onClick={()=>setShowRes(prev=>!prev)}>Показати/Скрити Результат</button>
+            <div className="form_container">
+                <label htmlFor="percent">Тариф, %</label>
+
+                <input name={'percent'} type="number" value={percent} onChange={handleChangePercent}/>
+
+            </div>
+            <div className="form_container">
+                <label htmlFor="type">Термін</label>
+
+                <select className={'select select_deadline'} onChange={handleChangeDeadline} defaultValue={deadline}>
+                    <option value={'1h'}>Година</option>
+                    <option value={'todayend'}>До Кінця Дня</option>
+                    <option value={'48h'}>48 Годин</option>
+                    <option value={'72h'}>78 Годин</option>
+                </select>
+            </div>
+            <div className="form_container">
+                <label htmlFor="type">Додаткова Інформація</label>
+
+                <textarea name={'additionalInfo'} cols="40" rows="4" value={additionalInfo} onChange={handleChangeAdditionalInfo}/>
+
+            </div>
+            <button className={'close_btn'} onClick={() => setShowRes(prev => !prev)}>Показати/Скрити Результат</button>
             <p>
                 {showRes ? JSON.stringify({
-                    type,city,amount,isPartly,percent,deadline,additionalInfo
-                }, null,2) : '-'}
+                    type, city, amount, isPartly, percent, deadline, additionalInfo
+                }, null, 2) : '-'}
             </p>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
         </div>

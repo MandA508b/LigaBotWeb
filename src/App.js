@@ -49,7 +49,7 @@ function App() {
     const handleSendData=async()=>{
         const adv = {
             userId:user.id,
-            name:"",
+            name:"-",
             type,
             cityId:city,total:amount,part:isPartly,rate:percent,
              deadline: deadline==='9999' ? dayjs().endOf('day').diff(dayjs()) : deadline

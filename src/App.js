@@ -2,12 +2,14 @@ import './App.css';
 import {useEffect, useState} from "react";
 import {useTelegram} from "./hooks/useTelegram";
 import axios from "axios";
-
+import dayjs from 'dayjs'
 function App() {
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
     const [error,setError] = useState('')
     const [cities, setCities] = useState([])
+    const [city, setCity] = useState('')
+    const {tg, user, onClose} = useTelegram()
 
 
     useEffect(() => {
@@ -18,7 +20,7 @@ function App() {
             try{
                 const res = await axios.get('https://ligabot.onrender.com/city/findAll')
                 setCities(res.data.cities)
-                console.log(cities,res)
+                setCity(res.data.cities[0]?._id)
                 setSuccess(true)
             }catch (e){
                 setError(JSON.stringify(e,null,2))
@@ -30,13 +32,11 @@ function App() {
         fetchData()
         tg.ready()
     }, [])
-    const {tg, user, onClose} = useTelegram()
     const [type, setType] = useState('buy')
-    const [city, setCity] = useState()
     const [amount, setAmount] = useState(10)
     const [isPartly, setIsPartly] = useState(0)
     const [percent, setPercent] = useState(10)
-    const [deadline, setDeadline] = useState('1hour')
+    const [deadline, setDeadline] = useState(1000*60*60)
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [showRes, setShowRes] = useState(false)
     const handleChangeType = e => setType(e.target.value)
@@ -46,7 +46,16 @@ function App() {
     const handleChangeIsPartly = e => setIsPartly(e.target.value)
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
-
+    const handleSendData=async()=>{
+        const adv = {
+            name:"",
+            type,
+            cityId:city,total:amount,part:isPartly,rate:percent,
+             deadline: deadline==='9999' ? dayjs().endOf('day').diff(dayjs()) : deadline
+             ,extraInfo:additionalInfo
+        }
+        
+    }
 
     return (
         <div className="App">
@@ -110,10 +119,10 @@ function App() {
                 <label htmlFor="type">Термін</label>
 
                 <select className={'select select_deadline'} onChange={handleChangeDeadline} defaultValue={deadline}>
-                    <option value={'1h'}>Година</option>
-                    <option value={'todayend'}>До Кінця Дня</option>
-                    <option value={'48h'}>48 Годин</option>
-                    <option value={'72h'}>78 Годин</option>
+                    <option value={1000*60*60}>Година</option>
+                    <option value={9999}>До Кінця Дня</option>
+                    <option value={1000*60*60*48}>48 Годин</option>
+                    <option value={1000*60*60*72}>78 Годин</option>
                 </select>
             </div>
             <div className="form_container">
@@ -122,7 +131,7 @@ function App() {
                 <textarea name={'additionalInfo'} cols="40" rows="4" value={additionalInfo} onChange={handleChangeAdditionalInfo}/>
 
             </div>
-            <button className={'close_btn'} onClick={() => setShowRes(prev => !prev)}>Показати/Скрити Результат</button>
+            <button className={'close_btn'} onClick={handleSendData}>Показати/Скрити Результат</button>
             <p>
                 {showRes ? JSON.stringify({
                     type, city, amount, isPartly, percent, deadline, additionalInfo
@@ -131,7 +140,7 @@ function App() {
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
                 {
-                    error.length ? error : ''
+                    error.length ? error : JSON.stringify(user,null,2)
                 }
             </p>
         </div>

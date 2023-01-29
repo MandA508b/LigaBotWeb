@@ -48,12 +48,14 @@ function App() {
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
     const handleSendData=async()=>{
         const adv = {
+            userId:user.id,
             name:"",
             type,
             cityId:city,total:amount,part:isPartly,rate:percent,
              deadline: deadline==='9999' ? dayjs().endOf('day').diff(dayjs()) : deadline
              ,extraInfo:additionalInfo
         }
+        await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
         
     }
 

@@ -39,6 +39,7 @@ function App() {
     const [deadline, setDeadline] = useState(1000*60*60)
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [showRes, setShowRes] = useState(false)
+    const [res, setRes] = useState({})
     const handleChangeType = e => setType(e.target.value)
     const handleChangeCity = e => setCity(e.target.value)
     const handleChangeAmount = e => setAmount(e.target.value)
@@ -55,6 +56,8 @@ function App() {
              deadline: deadline==='9999' ? dayjs().endOf('day').diff(dayjs()) : deadline
              ,extraInfo:additionalInfo
         }
+        console.log(adv)
+        setRes(adv)
         await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
         
     }
@@ -142,7 +145,7 @@ function App() {
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
                 {
-                    error.length ? error : JSON.stringify(user,null,2)
+                    error.length ? error : JSON.stringify(res,null,2)
                 }
             </p>
         </div>

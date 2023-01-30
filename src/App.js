@@ -3,6 +3,13 @@ import {useEffect, useState} from "react";
 import {useTelegram} from "./hooks/useTelegram";
 import axios from "axios";
 import dayjs from 'dayjs'
+import Loader from "./components/Loader/Loader";
+function addHours(date, hours) {
+    const timezone = 2
+    date.setTime(date.getTime() + timezone* 60 * 60 * 1000 +  hours * 60 * 60 * 1000);
+  
+    return date;
+  }
 function App() {
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
@@ -36,7 +43,7 @@ function App() {
     const [amount, setAmount] = useState(10)
     const [isPartly, setIsPartly] = useState(0)
     const [percent, setPercent] = useState(10)
-    const [deadline, setDeadline] = useState(1000*60*60)
+    const [deadline, setDeadline] = useState('1h')
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [showRes, setShowRes] = useState(false)
     const [res, setRes] = useState({})
@@ -48,19 +55,30 @@ function App() {
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
     const handleSendData=async()=>{
+        const date = new Date()
+        const deadlineData = {
+            '1h':dayjs().add(1, 'hour').format("DD.MM.YYYY HH:mm"),
+            'todayend':dayjs().add(dayjs().endOf('day').diff(dayjs()),'ms').format("DD.MM.YYYY HH:mm"),
+            '48h':dayjs().add(48,'hour').format("DD.MM.YYYY HH:mm"),
+            '78h':dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
+        }
+        console.log(deadline,deadlineData[deadline])
         const adv = {
-            userId:user.id,
-            name:"-",
+            userId:user?.id,
             type,
-            cityId:city,total:amount,part:isPartly,rate:percent,
-             deadline: deadline==='9999' ? dayjs().endOf('day').diff(dayjs()) : deadline
-             ,extraInfo:additionalInfo
+            cityId:city,
+            total:amount,
+            part:isPartly,
+            rate:percent,
+             deadline: deadlineData[deadline],
+             extraInfo:additionalInfo
         }
         console.log(adv)
         setRes(adv)
-        await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
+        //await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
         
     }
+    if(isLoading) return <Loader/>
 
     return (
         <div className="App">
@@ -124,10 +142,10 @@ function App() {
                 <label htmlFor="type">Термін</label>
 
                 <select className={'select select_deadline'} onChange={handleChangeDeadline} defaultValue={deadline}>
-                    <option value={1000*60*60}>Година</option>
-                    <option value={9999}>До Кінця Дня</option>
-                    <option value={1000*60*60*48}>48 Годин</option>
-                    <option value={1000*60*60*72}>78 Годин</option>
+                    <option value={'1h'}>Година</option>
+                    <option value={'todayend'}>До Кінця Дня</option>
+                    <option value={'48h'}>48 Годин</option>
+                    <option value={'78h'}>78 Годин</option>
                 </select>
             </div>
             <div className="form_container">

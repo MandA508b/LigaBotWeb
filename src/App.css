@@ -6,6 +6,9 @@
   max-width: fit-content;
 
 }
+textarea{
+  resize: none;
+}
 body{
   font-family: 'Roboto', sans-serif;
   color: var(--tg-theme-text-color);

@@ -13,7 +13,7 @@ function Redact() {
     const [error, setError] = useState('')
     const [cities, setCities] = useState([])
     const [city, setCity] = useState('')
-    const {tg, user, onClose} = useTelegram()
+    const {tg, onClose} = useTelegram()
     const location = useLocation()
     const [adver, setAdver] = useState({})
     const [title, setTitle] = useState('Редагування оголошення')

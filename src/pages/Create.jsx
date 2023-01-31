@@ -95,12 +95,11 @@ function Create() {
                         <option value="sell">Продаж</option>
                         <option value="buy">Купівля</option>
                     </select>
-                    </div>
+                </div>
 
-                    <div className="form_container">
+                <div className="form_container">
 
                     <label htmlFor="city">Місто</label>
-
                     <select className={'select select_city'} onChange={handleChangeCity} defaultValue={city} name="city"
                             id="city">
                         {
@@ -110,14 +109,13 @@ function Create() {
                         }
                     </select>
                 </div>
+            </div>
 
                 <div className="form_container">
                     <label style={{fontSize:'8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
                     <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                 </div>
 
-
-            </div>
             <div className="form_container">
                 <label htmlFor="amount">Ціна, $</label>
 

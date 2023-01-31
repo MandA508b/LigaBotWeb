@@ -75,6 +75,7 @@ function Create() {
             }
             await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
             setTitle("Оголошення успішно додане")
+            onClose()
         }catch (e) {
             setError(JSON.stringify(e, null, 2))
         }

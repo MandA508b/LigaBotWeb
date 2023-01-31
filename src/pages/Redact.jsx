@@ -74,6 +74,8 @@ function Redact() {
             const res = await axios.put('https://ligabotv2.onrender.com/advertisement/redact',{advertisementId,data:adv})
             setError(JSON.stringify(res,null,2))
             setTitle("Оголошення успішно додане")
+            tg.sendData(JSON.stringify(res))
+            onClose()
         }catch (e) {
             setError(JSON.stringify(e, null, 2))
         }
@@ -143,7 +145,7 @@ function Redact() {
                           onChange={handleChangeAdditionalInfo}/>
 
             </div>
-            <button className={'close_btn'} onClick={handleSendData}>Добавити</button>
+            <button className={'close_btn'} onClick={handleSendData}>Змінити</button>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
                 { error.length ? error : ''}

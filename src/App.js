@@ -65,24 +65,30 @@ function App() {
         }
         console.log(deadline, deadlineData[deadline])
         setRes({s:'s'})
-        const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
-        setRes({resUser})
-        const adv = {
-            userId: resUser.data.user._id,
-            leagueId:resUser.data.user.leagueId,
-            type,
-            cityId: city,
-            total: amount,
-            part: isPartly,
-            rate: percent,
-            deadline: deadlineData[deadline],
-            extraInfo: additionalInfo,
+        try{
+            const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
+            setRes({resUser})
+            const adv = {
+                userId: resUser.data.user._id,
+                leagueId:resUser.data.user.leagueId,
+                type,
+                cityId: city,
+                total: amount,
+                part: isPartly,
+                rate: percent,
+                deadline: deadlineData[deadline],
+                extraInfo: additionalInfo,
 
+            }
+            console.log(adv,userData)
+            setRes(adv)
+            const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
+            setRes(res)
+        }catch (e) {
+            setRes(e)
         }
-        console.log(adv,userData)
-        setRes(adv)
-        const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
-        setRes(res)
+
+
     }
     if (isLoading) return <Loader/>
 

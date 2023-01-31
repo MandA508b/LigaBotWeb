@@ -71,6 +71,7 @@ function App() {
             const adv = {
                 //userId: resUser.data.user._id,
                 //leagueId:resUser.data.user.leagueId,
+                ...user,
                 type,
                 cityId: city,
                 total: amount,

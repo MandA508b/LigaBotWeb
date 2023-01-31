@@ -76,7 +76,7 @@ function App() {
             }
             console.log(adv,userData)
             const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
-            onClose()
+            //onClose()
         }catch (e) {
             setError(JSON.stringify(e, null, 2))
         }
@@ -131,7 +131,7 @@ function App() {
                 </div>
 
                 {
-                    Boolean(isPartly) ?
+                    isPartly!==0 ?
 
                         <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                         : null

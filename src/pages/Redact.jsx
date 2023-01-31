@@ -2,11 +2,11 @@ import '../App.css';
 import {useEffect, useState} from "react";
 import {useTelegram} from "../hooks/useTelegram";
 import axios from "axios";
-import dayjs from 'dayjs'
 import Loader from "../components/Loader/Loader";
 import {useLocation} from "react-router-dom";
 
 function Redact() {
+    const [advData, setAdvData] = useState({})
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
     const [error, setError] = useState('')
@@ -29,9 +29,10 @@ function Redact() {
             setLoading(true)
             try {
                 const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
+                setTitle(location.pathname.split('/').slice(-1)[0])
                 const adv = await axios.post('https://ligabotv2.onrender.com/advertisement/findById',
                     {advertisementId: location.pathname.split('/').slice(-1)[0]})
-                const advData = adv.data.advertisement
+                setAdvData(adv.data.advertisement)
                 setType(advData.type.toLowerCase())
                 setAmount(adv.total)
                 setIsPartly(adv.part)
@@ -61,28 +62,22 @@ function Redact() {
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
     const handleSendData = async () => {
-        const deadlineData = {
-            '1h': dayjs().add(1, 'hour').format("DD.MM.YYYY HH:mm"),
-            'todayend': dayjs().add(dayjs().endOf('day').diff(dayjs()), 'ms').format("DD.MM.YYYY HH:mm"),
-            '48h': dayjs().add(48, 'hour').format("DD.MM.YYYY HH:mm"),
-            '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
-        }
-        console.log(deadline, deadlineData[deadline])
+
         try {
-            const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
             const adv = {
-                userId: resUser.data.user._id,
-                leagueId: resUser.data.user.leagueId,
+
+
                 type,
                 cityId: city,
                 total: amount,
                 part: isPartly,
                 rate: percent,
-                deadline: deadlineData[deadline],
+                deadline: deadline,
                 extraInfo: additionalInfo,
 
             }
-            await axios.post('https://ligabotv2.onrender.com/advertisement/create', adv)
+            //await axios.post('https://ligabotv2.onrender.com/advertisement/create', adv)
+            setError(JSON.stringify(advData, null, 2))
             setTitle("Оголошення успішно додане")
         } catch (e) {
             setError(JSON.stringify(e, null, 2))

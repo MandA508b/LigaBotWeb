@@ -252,7 +252,7 @@ function App() {
             <button className={'close_btn'} onClick={()=>setShowRes(prev=>!prev)}>Показати/Скрити Результат</button>
             <p>
                 {showRes ? JSON.stringify({
-                    type,city,amount,isPartly,percent,deadline,additionalInfo, user:user.username
+                    type,city,amount,isPartly,percent,deadline,additionalInfo, ...user
                 }, null,2) : '-'}
             </p>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>

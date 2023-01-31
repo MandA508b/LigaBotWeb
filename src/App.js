@@ -4,40 +4,42 @@ import {useTelegram} from "./hooks/useTelegram";
 import axios from "axios";
 import dayjs from 'dayjs'
 import Loader from "./components/Loader/Loader";
-function addHours(date, hours) {
-    const timezone = 2
-    date.setTime(date.getTime() + timezone* 60 * 60 * 1000 +  hours * 60 * 60 * 1000);
-  
-    return date;
-  }
+
 function App() {
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
-    const [error,setError] = useState('')
+    const [error, setError] = useState('')
     const [cities, setCities] = useState([])
     const [city, setCity] = useState('')
     const {tg, user, onClose} = useTelegram()
+    const [userData, setUserData] = useState({})
+
 
 
     useEffect(() => {
 
-        const fetchData = async ()=>{
+        const fetchData = async () => {
 
             setLoading(true)
-            try{
-                const res = await axios.get('https://ligabot.onrender.com/city/findAll')
+            try {
+                const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
+                const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
                 setCities(res.data.cities)
                 setCity(res.data.cities[0]?._id)
+                setUserData({leagueId: resUser.data.user.leagueId, userId: resUser.data.user._id})
+                console.log(userData)
+                setRes(resUser)
                 setSuccess(true)
-            }catch (e){
-                setError(JSON.stringify(e,null,2))
-            }finally {
+            } catch (e) {
+                setError(JSON.stringify(e, null, 2))
+            } finally {
                 setLoading(false)
             }
 
         }
-        fetchData()
         tg.ready()
+        fetchData()
+
     }, [])
     const [type, setType] = useState('buy')
     const [amount, setAmount] = useState(10)
@@ -54,31 +56,32 @@ function App() {
     const handleChangeIsPartly = e => setIsPartly(e.target.value)
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
-    const handleSendData=async()=>{
-        const date = new Date()
+    const handleSendData = async () => {
         const deadlineData = {
-            '1h':dayjs().add(1, 'hour').format("DD.MM.YYYY HH:mm"),
-            'todayend':dayjs().add(dayjs().endOf('day').diff(dayjs()),'ms').format("DD.MM.YYYY HH:mm"),
-            '48h':dayjs().add(48,'hour').format("DD.MM.YYYY HH:mm"),
-            '78h':dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
+            '1h': dayjs().add(1, 'hour').format("DD.MM.YYYY HH:mm"),
+            'todayend': dayjs().add(dayjs().endOf('day').diff(dayjs()), 'ms').format("DD.MM.YYYY HH:mm"),
+            '48h': dayjs().add(48, 'hour').format("DD.MM.YYYY HH:mm"),
+            '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
         }
-        console.log(deadline,deadlineData[deadline])
+        console.log(deadline, deadlineData[deadline])
         const adv = {
-            userId:user?.id,
+            userId: userData.userId,
+            leagueId:userData.leagueId,
             type,
-            cityId:city,
-            total:amount,
-            part:isPartly,
-            rate:percent,
-             deadline: deadlineData[deadline],
-             extraInfo:additionalInfo
+            cityId: city,
+            total: amount,
+            part: isPartly,
+            rate: percent,
+            deadline: deadlineData[deadline],
+            extraInfo: additionalInfo,
+
         }
-        console.log(adv)
+        console.log(adv,userData)
         setRes(adv)
-        //await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
-        
+        await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
+
     }
-    if(isLoading) return <Loader/>
+    if (isLoading) return <Loader/>
 
     return (
         <div className="App">
@@ -99,7 +102,7 @@ function App() {
                     <select className={'select select_city'} onChange={handleChangeCity} defaultValue={city} name="city"
                             id="city">
                         {
-                            isSuccess && !isLoading ? cities?.map(city=>(
+                            isSuccess && !isLoading ? cities?.map(city => (
                                 <option value={city?._id}>{city?.name}</option>
                             )) : null
                         }
@@ -128,7 +131,7 @@ function App() {
                 {
                     !!isPartly ?
 
-                            <input  type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+                        <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                         : null
                 }
             </div>
@@ -151,7 +154,8 @@ function App() {
             <div className="form_container">
                 <label htmlFor="type">Додаткова Інформація</label>
 
-                <textarea name={'additionalInfo'} cols="40" rows="4" value={additionalInfo} onChange={handleChangeAdditionalInfo}/>
+                <textarea name={'additionalInfo'} cols="40" rows="4" value={additionalInfo}
+                          onChange={handleChangeAdditionalInfo}/>
 
             </div>
             <button className={'close_btn'} onClick={handleSendData}>Показати/Скрити Результат</button>
@@ -163,7 +167,7 @@ function App() {
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
                 {
-                    error.length ? error : JSON.stringify(res,null,2)
+                    error.length ? error : JSON.stringify(res, null, 2)
                 }
             </p>
         </div>

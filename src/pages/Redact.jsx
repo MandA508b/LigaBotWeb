@@ -121,8 +121,8 @@ function Redact() {
             <div className={'container'}>
 
 
-            <div>
-                <label style={{fontSize:'10px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
+            <div className="form_container">
+                <label style={{fontSize:'8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
                 <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
             </div>
 

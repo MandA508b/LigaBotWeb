@@ -39,6 +39,7 @@ function App() {
         fetchData()
 
     }, [])
+    const [title, setTitle] = useState('Нове Оголошення')
     const [type, setType] = useState('buy')
     const [amount, setAmount] = useState(10)
     const [isPartly, setIsPartly] = useState(0)
@@ -75,8 +76,8 @@ function App() {
 
             }
             console.log(adv,userData)
-            const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
-            //onClose()
+           await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
+            setTitle("Оголошення успішно додане")
         }catch (e) {
             setError(JSON.stringify(e, null, 2))
         }
@@ -87,7 +88,7 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Нове Оголошення</h1>
+            <h1>{title}</h1>
             <div className="container">
                 <div className={'form_container'}>
                     <label htmlFor="type">Тип</label>

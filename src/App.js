@@ -66,7 +66,7 @@ function App() {
         console.log(deadline, deadlineData[deadline])
         setRes({s:'s'})
         try{
-            const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
+            const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.ID})
             setRes({resUser})
             const adv = {
                 userId: resUser.data.user._id,

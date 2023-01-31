@@ -80,8 +80,8 @@ function App() {
         }
         console.log(adv,userData)
         setRes(adv)
-        await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
-
+        const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
+        setRes(res)
     }
     if (isLoading) return <Loader/>
 

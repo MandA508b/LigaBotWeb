@@ -206,15 +206,13 @@ function App() {
     const [cities, setCities] = useState([])
     const [city, setCity] = useState('')
     const {tg, user, onClose} = useTelegram()
-
-
     useEffect(() => {
 
         const fetchData = async ()=>{
 
             setLoading(true)
             try{
-                const res = await axios.get('https://ligabot.onrender.com/city/findAll')
+                const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
                 setCities(res.data.cities)
                 setCity(res.data.cities[0]?._id)
                 setSuccess(true)

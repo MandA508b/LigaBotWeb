@@ -23,12 +23,12 @@ function App() {
             setLoading(true)
             try {
                 const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
-                const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
+                //const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
                 setCities(res.data.cities)
                 setCity(res.data.cities[0]?._id)
-                setUserData({leagueId: resUser.data.user.leagueId, userId: resUser.data.user._id})
-                console.log(userData)
-                setRes(resUser)
+                //setUserData({leagueId: resUser.data.user.leagueId, userId: resUser.data.user._id})
+               // console.log(userData)
+                //setRes(resUser)
                 setSuccess(true)
             } catch (e) {
                 setError(JSON.stringify(e, null, 2))
@@ -64,9 +64,11 @@ function App() {
             '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
         }
         console.log(deadline, deadlineData[deadline])
+        const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
+
         const adv = {
-            userId: userData.userId,
-            leagueId:userData.leagueId,
+            userId: resUser.data.user._id,
+            leagueId:resUser.data.user.leagueId,
             type,
             cityId: city,
             total: amount,
@@ -78,7 +80,7 @@ function App() {
         }
         console.log(adv,userData)
         setRes(adv)
-        await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
+        await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
 
     }
     if (isLoading) return <Loader/>

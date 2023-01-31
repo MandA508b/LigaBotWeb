@@ -23,7 +23,7 @@ function App() {
 
             setLoading(true)
             try {
-                const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
+                const res = await axios.get('http://localhost:5000/city/findAll')
                 setCities(res.data.cities)
                 setCity(res.data.cities[0]?._id)
                 setSuccess(true)
@@ -64,7 +64,7 @@ function App() {
         console.log(deadline, deadlineData[deadline])
         setRes({s:'s'})
         try{
-            const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
+            const resUser = await axios.post('http://localhost:5000/user/getUserByTelegramId', {telegramId: user?.id})
             setRes({resUser})
             const adv = {
                 userId: resUser.data.user._id,
@@ -80,7 +80,7 @@ function App() {
             }
             console.log(adv,userData)
             setRes({...user,...adv})
-            const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
+            const res = await axios.post('http://localhost:5000/advertisement/create',adv)
             setRes(res)
         }catch (e) {
             setRes(e)

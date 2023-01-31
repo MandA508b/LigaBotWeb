@@ -45,8 +45,6 @@ function App() {
     const [percent, setPercent] = useState(10)
     const [deadline, setDeadline] = useState('1h')
     const [additionalInfo, setAdditionalInfo] = useState('')
-    const [showRes, setShowRes] = useState(false)
-    const [res, setRes] = useState({})
     const handleChangeType = e => setType(e.target.value)
     const handleChangeCity = e => setCity(e.target.value)
     const handleChangeAmount = e => setAmount(e.target.value)
@@ -62,10 +60,8 @@ function App() {
             '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
         }
         console.log(deadline, deadlineData[deadline])
-        setRes({s:'s'})
         try{
             const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
-            setRes({resUser})
             const adv = {
                 userId: resUser.data.user._id,
                 leagueId:resUser.data.user.leagueId,
@@ -79,11 +75,10 @@ function App() {
 
             }
             console.log(adv,userData)
-            setRes({...user,...adv})
             const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
-            setRes(res)
+            onClose()
         }catch (e) {
-            setRes(e)
+            setError(JSON.stringify(e, null, 2))
         }
 
 
@@ -136,7 +131,7 @@ function App() {
                 </div>
 
                 {
-                    !!isPartly ?
+                    Boolean(isPartly) ?
 
                         <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                         : null
@@ -165,17 +160,10 @@ function App() {
                           onChange={handleChangeAdditionalInfo}/>
 
             </div>
-            <button className={'close_btn'} onClick={handleSendData}>Показати/Скрити Результат</button>
-            <p>
-                {showRes ? JSON.stringify({
-                    type, city, amount, isPartly, percent, deadline, additionalInfo
-                }, null, 2) : '-'}
-            </p>
+            <button className={'close_btn'} onClick={handleSendData}>Добавити</button>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
-                {
-                    error.length ? error : JSON.stringify(res, null, 2)
-                }
+                { error.length ? error : ''}
             </p>
         </div>
     );

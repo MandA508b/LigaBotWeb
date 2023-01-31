@@ -1,18 +1,21 @@
+
 import '../App.css';
 import {useEffect, useState} from "react";
 import {useTelegram} from "../hooks/useTelegram";
 import axios from "axios";
+import dayjs from 'dayjs'
 import Loader from "../components/Loader/Loader";
 import {useLocation} from "react-router-dom";
 
 function Redact() {
-    const [advData, setAdvData] = useState({})
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
     const [error, setError] = useState('')
     const [cities, setCities] = useState([])
     const [city, setCity] = useState('')
     const {tg, user, onClose} = useTelegram()
+    const location = useLocation()
+    const [adver, setAdver] = useState({})
     const [title, setTitle] = useState('Нове Оголошення')
     const [type, setType] = useState('buy')
     const [amount, setAmount] = useState(10)
@@ -20,25 +23,32 @@ function Redact() {
     const [percent, setPercent] = useState(10)
     const [deadline, setDeadline] = useState('1h')
     const [additionalInfo, setAdditionalInfo] = useState('')
-    const [values, setValues] = useState({
-        cities:[],
-        city:'', type:'',total:'',rate:'',part:'',deadline:'',extraInfo:''
-    })
-    const location = useLocation()
-
+    const handleChangeType = e => setType(e.target.value)
+    const handleChangeCity = e => setCity(e.target.value)
+    const handleChangeAmount = e => setAmount(e.target.value)
+    const handleChangePercent = e => setPercent(e.target.value)
+    const handleChangeIsPartly = e => setIsPartly(e.target.value)
+    const handleChangeDeadline = e => setDeadline(e.target.value)
+    const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
     useEffect(() => {
 
         const fetchData = async () => {
 
             setLoading(true)
             try {
+                const advertisementId = location.pathname.split('/').slice(-1)[0]
                 const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
-                setTitle(location.pathname.split('/').slice(-1)[0])
-                const adv = await axios.post('https://ligabotv2.onrender.com/advertisement/findById',
-                    {advertisementId: location.pathname.split('/').slice(-1)[0]})
-                setAdvData(adv.data.advertisement)
-                setError(JSON.stringify(adv,null,2))
-                setValues(advData)
+                const adv = await axios.post('https://ligabotv2.onrender.com/advertisement/findById',{advertisementId})
+                setAdver(adv["data"]["advertisement"])
+                setAmount(adv["data"]["advertisement"]["total"])
+                setType(adv["data"]["advertisement"]["type"])
+                setPercent(adv["data"]["advertisement"]["rate"])
+                setAdditionalInfo(adv["data"]["advertisement"]["extraInfo"])
+                setIsPartly(adv["data"]["advertisement"]["part"])
+                setDeadline(adv["data"]["advertisement"]["deadline"])
+                console.log(adver)
+                setCities(res.data.cities)
+                setCity(res.data.cities[0]?._id)
                 setSuccess(true)
             } catch (e) {
                 setError(JSON.stringify(e, null, 2))
@@ -53,53 +63,18 @@ function Redact() {
 
     }, [])
 
-    // const handleChangeType = e => setType(e.target.value)
-    // const handleChangeCity = e => setCity(e.target.value)
-    // const handleChangeAmount = e => setAmount(e.target.value)
-    // const handleChangePercent = e => setPercent(e.target.value)
-    // const handleChangeIsPartly = e => setIsPartly(e.target.value)
-    // const handleChangeDeadline = e => setDeadline(e.target.value)
-    // const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
-    const handleChangeType = e => setValues(prev=> {
-        return {...prev, type: e.target.value}
-    })
-    const handleChangeCity = e => setValues(prev=> {
-        return {...prev, city: e.target.value}
-    })
-    const handleChangeAmount = e => setValues(prev=> {
-        return {...prev, total: e.target.value}
-    })
-    const handleChangePercent = e => setValues(prev=> {
-        return {...prev, rate: e.target.value}
-    })
-    const handleChangeIsPartly = e => setValues(prev=> {
-        return {...prev, part: e.target.value}
-    })
-    const handleChangeDeadline = e => setValues(prev=> {
-        return {...prev, deadline: e.target.value}
-    })
-    const handleChangeAdditionalInfo = e => setValues(prev=> {
-        return {...prev, extraInfo: e.target.value}
-    })
     const handleSendData = async () => {
+        try{
+            console.log(adver)
+            const adv = {...adver, total:amount, rate:percent, part:isPartly, deadline,type, extraInfo:additionalInfo,cityId:city}
+            await
+            console.log(adv)
+            const advertisementId = location.pathname.split('/').slice(-1)[0]
 
-        try {
-            const adv = {
-
-
-                type,
-                cityId: city,
-                total: amount,
-                part: isPartly,
-                rate: percent,
-                deadline: deadline,
-                extraInfo: additionalInfo,
-
-            }
-            //await axios.post('https://ligabotv2.onrender.com/advertisement/create', adv)
-            setError(JSON.stringify(values, null, 2))
+            const res = await axios.put('https://ligabotv2.onrender.com/advertisement/redact',{advertisementId,data:adv})
+            setError(JSON.stringify(res,null,2))
             setTitle("Оголошення успішно додане")
-        } catch (e) {
+        }catch (e) {
             setError(JSON.stringify(e, null, 2))
         }
 
@@ -142,25 +117,13 @@ function Redact() {
             </div>
 
             <div className={'container'}>
-                <div className="form_container">
-                    <label htmlFor="isPartly">Частинами?</label>
 
-                    <select name={'isPartly'} className={'select select_ispartly'} onChange={handleChangeIsPartly}
-                            defaultValue={isPartly}>
-                        <option value={0}>Одною</option>
-                        <option value={1}>Частинами</option>
-                    </select>
-                </div>
 
-                {
-                    isPartly !== 0 ?
-                        <>
-                            <label>Введіть частину(якщо одна частина, то введіть 0)</label>
-                            <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
-                        </>
+            <div>
+                <label style={{fontSize:'10px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
+                <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+            </div>
 
-                        : null
-                }
             </div>
             <div className="form_container">
                 <label htmlFor="percent">Тариф, %</label>
@@ -171,7 +134,7 @@ function Redact() {
             <div className="form_container">
                 <label htmlFor="type">Термін</label>
 
-                <input type="text" value={deadline} defaultValue={deadline} onChange={handleChangeDeadline}/>
+                <input type={'text'} value={deadline} onChange={handleChangeDeadline}/>
             </div>
             <div className="form_container">
                 <label htmlFor="type">Додаткова Інформація</label>
@@ -183,7 +146,7 @@ function Redact() {
             <button className={'close_btn'} onClick={handleSendData}>Добавити</button>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
-                {error.length ? error : ''}
+                { error.length ? error : ''}
             </p>
         </div>
     );

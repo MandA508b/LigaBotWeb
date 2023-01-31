@@ -119,24 +119,14 @@ function Create() {
 
             <div className={'container'}>
                 <div className="form_container">
-                    <label htmlFor="isPartly">Частинами?</label>
-
-                    <select name={'isPartly'} className={'select select_ispartly'} onChange={handleChangeIsPartly}
-                            defaultValue={isPartly}>
-                        <option value={0}>Одною</option>
-                        <option value={1}>Частинами</option>
-                    </select>
+                    <label >Введіть частину(якщо одна частина, то введіть 0)</label>
+                    <input  type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                 </div>
 
-                {
-                    isPartly!==0 ?
-                        <>
+
                             <label >Введіть частину(якщо одна частина, то введіть 0)</label>
                             <input  type='number' value={isPartly} onChange={handleChangeIsPartly}/>
-                        </>
 
-                        : null
-                }
             </div>
             <div className="form_container">
                 <label htmlFor="percent">Тариф, %</label>

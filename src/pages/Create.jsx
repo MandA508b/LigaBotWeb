@@ -72,7 +72,6 @@ function Create() {
                 rate: percent,
                 deadline: deadlineData[deadline],
                 extraInfo: additionalInfo,
-
             }
             await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
             setTitle("Оголошення успішно додане")

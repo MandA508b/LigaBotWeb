@@ -20,6 +20,10 @@ function Redact() {
     const [percent, setPercent] = useState(10)
     const [deadline, setDeadline] = useState('1h')
     const [additionalInfo, setAdditionalInfo] = useState('')
+    const [values, setValues] = useState({
+        cities:[],
+        city:'', type:'',total:'',rate:'',part:'',deadline:'',extraInfo:''
+    })
     const location = useLocation()
 
     useEffect(() => {
@@ -34,13 +38,7 @@ function Redact() {
                     {advertisementId: location.pathname.split('/').slice(-1)[0]})
                 setAdvData(adv.data.advertisement)
                 setError(JSON.stringify(adv,null,2))
-                setType(advData.type.toLowerCase())
-                setAmount(adv.total)
-                setIsPartly(adv.part)
-                setPercent(adv.rate)
-                setAdditionalInfo(adv.extraInfo)
-                setCities(res.data.cities)
-                setCity('')
+                setValues(advData)
                 setSuccess(true)
             } catch (e) {
                 setError(JSON.stringify(e, null, 2))
@@ -55,13 +53,34 @@ function Redact() {
 
     }, [])
 
-    const handleChangeType = e => setType(e.target.value)
-    const handleChangeCity = e => setCity(e.target.value)
-    const handleChangeAmount = e => setAmount(e.target.value)
-    const handleChangePercent = e => setPercent(e.target.value)
-    const handleChangeIsPartly = e => setIsPartly(e.target.value)
-    const handleChangeDeadline = e => setDeadline(e.target.value)
-    const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
+    // const handleChangeType = e => setType(e.target.value)
+    // const handleChangeCity = e => setCity(e.target.value)
+    // const handleChangeAmount = e => setAmount(e.target.value)
+    // const handleChangePercent = e => setPercent(e.target.value)
+    // const handleChangeIsPartly = e => setIsPartly(e.target.value)
+    // const handleChangeDeadline = e => setDeadline(e.target.value)
+    // const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
+    const handleChangeType = e => setValues(prev=> {
+        return {...prev, type: e.target.value}
+    })
+    const handleChangeCity = e => setValues(prev=> {
+        return {...prev, city: e.target.value}
+    })
+    const handleChangeAmount = e => setValues(prev=> {
+        return {...prev, total: e.target.value}
+    })
+    const handleChangePercent = e => setValues(prev=> {
+        return {...prev, rate: e.target.value}
+    })
+    const handleChangeIsPartly = e => setValues(prev=> {
+        return {...prev, part: e.target.value}
+    })
+    const handleChangeDeadline = e => setValues(prev=> {
+        return {...prev, deadline: e.target.value}
+    })
+    const handleChangeAdditionalInfo = e => setValues(prev=> {
+        return {...prev, extraInfo: e.target.value}
+    })
     const handleSendData = async () => {
 
         try {
@@ -78,7 +97,7 @@ function Redact() {
 
             }
             //await axios.post('https://ligabotv2.onrender.com/advertisement/create', adv)
-            setError(JSON.stringify(advData, null, 2))
+            setError(JSON.stringify(values, null, 2))
             setTitle("Оголошення успішно додане")
         } catch (e) {
             setError(JSON.stringify(e, null, 2))

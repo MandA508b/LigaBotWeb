@@ -95,6 +95,19 @@ function Create() {
                         <option value="sell">Продаж</option>
                         <option value="buy">Купівля</option>
                     </select>
+                    <div className="form_container">
+
+                    <label htmlFor="city">Місто</label>
+
+                    <select className={'select select_city'} onChange={handleChangeCity} defaultValue={city} name="city"
+                            id="city">
+                        {
+                            isSuccess && !isLoading ? cities?.map(city => (
+                                <option value={city?._id}>{city?.name}</option>
+                            )) : null
+                        }
+                    </select>
+                </div>
                 </div>
 
                 <div className="form_container">
@@ -110,7 +123,6 @@ function Create() {
                 <input name={'amount'} type="number" value={amount} onChange={handleChangeAmount}/>
 
             </div>
-
 
 
             <div className="form_container">

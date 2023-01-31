@@ -132,8 +132,11 @@ function App() {
 
                 {
                     isPartly!==0 ?
+                        <>
+                            <label >Введіть частину(якщо одна частина, то введіть 0)</label>
+                            <input  type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+                        </>
 
-                        <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                         : null
                 }
             </div>

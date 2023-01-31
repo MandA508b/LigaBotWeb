@@ -33,6 +33,7 @@ function Redact() {
                 const adv = await axios.post('https://ligabotv2.onrender.com/advertisement/findById',
                     {advertisementId: location.pathname.split('/').slice(-1)[0]})
                 setAdvData(adv.data.advertisement)
+                setError(JSON.stringify(adv,null,2))
                 setType(advData.type.toLowerCase())
                 setAmount(adv.total)
                 setIsPartly(adv.part)

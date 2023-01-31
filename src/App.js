@@ -64,8 +64,9 @@ function App() {
             '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
         }
         console.log(deadline, deadlineData[deadline])
+        setRes({s:'s'})
         const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
-
+        setRes({resUser})
         const adv = {
             userId: resUser.data.user._id,
             leagueId:resUser.data.user.leagueId,

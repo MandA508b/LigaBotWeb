@@ -261,7 +261,7 @@ function App() {
             extraInfo:additionalInfo
         }
         console.log(adv)
-        setRes({...user,adv})
+        setRes({user,adv})
         //await axios.post('https://ligabot.onrender.com/advertisement/create',adv)
 
     }

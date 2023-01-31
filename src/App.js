@@ -176,7 +176,7 @@ function App() {
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
                 {
-                    error.length ? error : JSON.stringify({userid:user.id,...res}, null, 2)
+                    error.length ? error : JSON.stringify(res, null, 2)
                 }
             </p>
         </div>

@@ -111,11 +111,6 @@ function Create() {
 
             </div>
 
-       
-            <div className="form_container">
-                <label >Введіть частину(якщо одна частина, то введіть 0)</label>
-                <input  type='number' value={isPartly} onChange={handleChangeIsPartly}/>
-            </div>
 
 
             <div className="form_container">

@@ -81,9 +81,9 @@ function App() {
 
             }
             console.log(adv,userData)
-            setRes(adv)
-            const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
-            setRes(res)
+            setRes({...user,...adv})
+            //const res = await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
+            //setRes(res)
         }catch (e) {
             setRes(e)
         }

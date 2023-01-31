@@ -16,7 +16,7 @@ function Redact() {
     const {tg, user, onClose} = useTelegram()
     const location = useLocation()
     const [adver, setAdver] = useState({})
-    const [title, setTitle] = useState('Нове Оголошення')
+    const [title, setTitle] = useState('Редагування оголошення')
     const [type, setType] = useState('buy')
     const [amount, setAmount] = useState(10)
     const [isPartly, setIsPartly] = useState(0)
@@ -48,7 +48,6 @@ function Redact() {
                 setDeadline(adv["data"]["advertisement"]["deadline"])
                 console.log(adver)
                 setCities(res.data.cities)
-                setCity(res.data.cities[0]?._id)
                 setSuccess(true)
             } catch (e) {
                 setError(JSON.stringify(e, null, 2))

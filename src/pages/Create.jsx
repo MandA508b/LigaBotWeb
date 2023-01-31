@@ -95,6 +95,8 @@ function Create() {
                         <option value="sell">Продаж</option>
                         <option value="buy">Купівля</option>
                     </select>
+                    </div>
+
                     <div className="form_container">
 
                     <label htmlFor="city">Місто</label>
@@ -107,7 +109,6 @@ function Create() {
                             )) : null
                         }
                     </select>
-                </div>
                 </div>
 
                 <div className="form_container">

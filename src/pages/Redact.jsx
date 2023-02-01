@@ -38,8 +38,8 @@ function Redact() {
             setLoading(true)
             try {
                 const advertisementId = location.pathname.split('/').slice(-1)[0]
-                const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
-                const adv = await axios.post('https://ligabotv2.onrender.com/advertisement/findById',{advertisementId})
+                const res = await axios.get('https://indigo-sockeye-kit.cyclic.app/city/findAll')
+                const adv = await axios.post('https://indigo-sockeye-kit.cyclic.app/advertisement/findById',{advertisementId})
                 setAdver(adv["data"]["advertisement"])
                 setAmount(adv["data"]["advertisement"]["total"])
                 setType(adv["data"]["advertisement"]["type"])
@@ -71,7 +71,7 @@ function Redact() {
             console.log(adv)
             const advertisementId = location.pathname.split('/').slice(-1)[0]
 
-            const res = await axios.put('https://ligabotv2.onrender.com/advertisement/redact',{advertisementId,data:adv})
+            const res = await axios.put('https://indigo-sockeye-kit.cyclic.app/advertisement/redact',{advertisementId,data:adv})
             setError(JSON.stringify(res,null,2))
             setTitle("Оголошення успішно додане")
             tg.sendData(JSON.stringify(res))

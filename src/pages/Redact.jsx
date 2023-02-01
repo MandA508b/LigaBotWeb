@@ -8,6 +8,7 @@ import Loader from "../components/Loader/Loader";
 import {useLocation} from "react-router-dom";
 
 function Redact() {
+
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
     const [error, setError] = useState('')

@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import Loader from "../components/Loader/Loader";
 
 function Create() {
+    const url = process.env.REACT_APP_SERVER_URL
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
     const [error, setError] = useState('')

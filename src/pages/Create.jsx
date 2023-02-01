@@ -60,7 +60,6 @@ function Create() {
             '48h': dayjs().add(48, 'hour').format("DD.MM.YYYY HH:mm"),
             '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
         }
-        console.log(deadline, deadlineData[deadline])
         try{
             const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
             const adv = {

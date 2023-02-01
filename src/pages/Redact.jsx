@@ -47,8 +47,8 @@ function Redact() {
                 setAdditionalInfo(adv["data"]["advertisement"]["extraInfo"])
                 setIsPartly(adv["data"]["advertisement"]["part"])
                 setDeadline(adv["data"]["advertisement"]["deadline"])
-                console.log(adver)
                 setCities(res.data.cities)
+                setCity(res.data.cities[0]?._id)
                 setSuccess(true)
             } catch (e) {
                 setError(JSON.stringify(e, null, 2))

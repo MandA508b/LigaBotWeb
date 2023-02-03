@@ -6,8 +6,7 @@ import axios from "axios";
 import dayjs from 'dayjs'
 import Loader from "../components/Loader/Loader";
 
-function Create() {
-    const url = process.env.REACT_APP_SERVER_URL
+function Create({url}) {
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
     const [error, setError] = useState('')
@@ -23,7 +22,7 @@ function Create() {
 
             setLoading(true)
             try {
-                const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
+                const res = await axios.get(`${url}/city/findAll`)
                 setCities(res.data.cities)
                 setCity(res.data.cities[0]?._id)
                 setSuccess(true)
@@ -61,7 +60,7 @@ function Create() {
             '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
         }
         try{
-            const resUser = await axios.post('https://ligabotv2.onrender.com/user/getUserByTelegramId', {telegramId: user?.id})
+            const resUser = await axios.post(`${url}/user/getUserByTelegramId`, {telegramId: user?.id})
             const adv = {
                 userId: resUser.data.user._id,
                 leagueId:resUser.data.user.leagueId,
@@ -73,7 +72,7 @@ function Create() {
                 deadline: deadlineData[deadline],
                 extraInfo: additionalInfo,
             }
-            await axios.post('https://ligabotv2.onrender.com/advertisement/create',adv)
+            await axios.post(`${url}/advertisement/create`,adv)
             setTitle("Оголошення успішно додане")
             onClose()
         }catch (e) {

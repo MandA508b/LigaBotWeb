@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import Loader from "../components/Loader/Loader";
 import {useLocation} from "react-router-dom";
 
-function Redact() {
+function Redact({url}) {
 
     const [isLoading, setLoading] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
@@ -38,8 +38,8 @@ function Redact() {
             setLoading(true)
             try {
                 const advertisementId = location.pathname.split('/').slice(-1)[0]
-                const res = await axios.get('https://ligabotv2.onrender.com/city/findAll')
-                const adv = await axios.post('https://ligabotv2.onrender.com/advertisement/findById',{advertisementId})
+                const res = await axios.get(`${url}/city/findAll`)
+                const adv = await axios.post(`${url}/advertisement/findById`,{advertisementId})
                 setAdver(adv["data"]["advertisement"])
                 setAmount(adv["data"]["advertisement"]["total"])
                 setType(adv["data"]["advertisement"]["type"])
@@ -71,7 +71,7 @@ function Redact() {
             console.log(adv)
             const advertisementId = location.pathname.split('/').slice(-1)[0]
 
-            const res = await axios.put('https://ligabotv2.onrender.com/advertisement/redact',{advertisementId,data:adv})
+            const res = await axios.put(`${url}/advertisement/redact`,{advertisementId,data:adv})
             setError(JSON.stringify(res,null,2))
             setTitle("Оголошення успішно додане")
             tg.sendData(JSON.stringify(res))

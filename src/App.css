@@ -23,7 +23,7 @@ label{
   min-height:100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /*justify-content: center;*/
   align-items: center;
   gap:10px;
   background: var(--tg-theme-bg-color);

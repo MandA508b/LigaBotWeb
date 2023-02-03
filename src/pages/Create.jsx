@@ -110,10 +110,7 @@ function Create({url}) {
                 </div>
             </div>
 
-                <div className="form_container">
-                    <label style={{fontSize:'8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
-                    <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
-                </div>
+
 
             <div className="form_container">
                 <label htmlFor="amount">Ціна, $</label>
@@ -122,7 +119,10 @@ function Create({url}) {
 
             </div>
 
-
+            <div className="form_container">
+                <label style={{fontSize:'8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
+                <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+            </div>
             <div className="form_container">
                 <label htmlFor="percent">Тариф, %</label>
 
@@ -142,7 +142,7 @@ function Create({url}) {
             <div className="form_container">
                 <label htmlFor="type">Додаткова Інформація</label>
 
-                <textarea name={'additionalInfo'} cols="40" rows="4" value={additionalInfo}
+                <textarea name={'additionalInfo'} cols="40" rows="2" value={additionalInfo}
                           onChange={handleChangeAdditionalInfo}/>
 
             </div>

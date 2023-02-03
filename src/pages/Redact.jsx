@@ -141,7 +141,7 @@ function Redact({url}) {
             <div className="form_container">
                 <label htmlFor="type">Додаткова Інформація</label>
 
-                <textarea name={'additionalInfo'} cols="40" rows="4" value={additionalInfo}
+                <textarea name={'additionalInfo'} cols="40" rows="2" value={additionalInfo}
                           onChange={handleChangeAdditionalInfo}/>
 
             </div>

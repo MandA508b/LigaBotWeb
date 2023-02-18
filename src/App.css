@@ -30,15 +30,25 @@ label{
 }
 .container{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: 200px;
+
   gap: 16px;
 }
 .form_container{
   display: flex;
   flex-direction: column;
+  width: 200px;
 }
+
+.buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 4px;
+  }
+
 .close_btn{
-  font-size: 22px;
   border-radius: 4px;
   padding: 8px 16px;
   color:var(--tg-theme-button-text-color);
@@ -55,6 +65,19 @@ label{
   font-size: 16px;
   transition: all 150ms ease;
 }
+.percent{
+  width: 100px;
+}
+
+.yourprice{
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 4px;
+}
+
+
+
+
 .select option{
   max-width: 200px;
 }

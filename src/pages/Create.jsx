@@ -5,6 +5,7 @@ import {useTelegram} from "../hooks/useTelegram";
 import axios from "axios";
 import dayjs from 'dayjs'
 import Loader from "../components/Loader/Loader";
+import {Typography} from "@mui/material";
 
 function Create({url}) {
     const [isLoading, setLoading] = useState(false)
@@ -22,9 +23,9 @@ function Create({url}) {
 
             setLoading(true)
             try {
-                const res = await axios.get(`${url}/city/findAll`)
-                setCities(res.data.cities)
-                setCity(res.data.cities[0]?._id)
+                //const res = await axios.get(`${url}/city/findAll`)
+                //setCities(res.data.cities)
+                //setCity(res.data.cities[0]?._id)
                 setSuccess(true)
             } catch (e) {
                 setError(JSON.stringify(e, null, 2))
@@ -42,7 +43,7 @@ function Create({url}) {
     const [type, setType] = useState('buy')
     const [amount, setAmount] = useState(10)
     const [isPartly, setIsPartly] = useState(0)
-    const [percent, setPercent] = useState(10)
+    const [percent, setPercent] = useState(5)
     const [deadline, setDeadline] = useState('1h')
     const [additionalInfo, setAdditionalInfo] = useState('')
     const handleChangeType = e => setType(e.target.value)
@@ -52,6 +53,8 @@ function Create({url}) {
     const handleChangeIsPartly = e => setIsPartly(e.target.value)
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
+    const handleYourPrice = e => e.target.checked ? setPercent(0) : setPercent(5)
+
     const handleSendData = async () => {
         const deadlineData = {
             '1h': dayjs().add(1, 'hour').format("DD.MM.YYYY HH:mm"),
@@ -81,7 +84,7 @@ function Create({url}) {
 
 
     }
-    if (isLoading) return <Loader/>
+    if (isLoading) return <Typography>loading</Typography>
 
     return (
         <div className="App">
@@ -103,7 +106,7 @@ function Create({url}) {
                             id="city">
                         {
                             isSuccess && !isLoading ? cities?.map(city => (
-                                <option value={city?._id}>{city?.name}</option>
+                                <option key={city?._id} value={city?._id}>{city?.name}</option>
                             )) : null
                         }
                     </select>
@@ -123,12 +126,29 @@ function Create({url}) {
                 <label style={{fontSize:'8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
                 <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
             </div>
-            <div className="form_container">
-                <label htmlFor="percent">Тариф, %</label>
+            <div className="container">
+                <div className="form_container">
+                    <label htmlFor="type">Тариф</label>
 
-                <input name={'percent'} type="number" value={percent} onChange={handleChangePercent}/>
+                    <select className={'select'} onChange={handleChangePercent} value={percent}>
+                        <option value={0.5}>0.5%</option>
+                        <option value={1}>1%</option>
+                        <option value={2}>2%</option>
+                        <option value={5}>5%</option>
+                    </select>
 
+                </div>
+                <div className="form_container">
+                    <label htmlFor="percent">Ручне введення</label>
+                    <input className={'percent'} name={'percent'} type="number" value={percent} onChange={handleChangePercent}/>
+                </div>
             </div>
+            <div className="form_container yourprice">
+                <label htmlFor="type">Запропонуйте свою ціну</label>
+
+                <input type="checkbox" onChange={e=>handleYourPrice(e)}/>
+            </div>
+
             <div className="form_container">
                 <label htmlFor="type">Термін</label>
 
@@ -146,8 +166,11 @@ function Create({url}) {
                           onChange={handleChangeAdditionalInfo}/>
 
             </div>
-            <button className={'close_btn'} onClick={handleSendData}>Добавити</button>
-            <button className={'close_btn'} onClick={onClose}>Закрити</button>
+            <div className={'buttons'}>
+                <button className={'close_btn'} onClick={handleSendData}>Добавити</button>
+                <button className={'close_btn'} onClick={onClose}>Закрити</button>
+            </div>
+
             <p>
                 { error.length ? error : ''}
             </p>

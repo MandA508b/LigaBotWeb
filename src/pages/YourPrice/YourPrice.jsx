@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import {useTelegram} from "../../hooks/useTelegram";
 
-function YourPrice() {
+function YourPrice({url}) {
     const {tg, user, onClose} = useTelegram()
     useEffect(()=>{
         tg.ready()
@@ -26,7 +26,7 @@ function YourPrice() {
         console.log(`Input value: ${rate}`);
         const {chatId} = queryString.parse(location.search)
         try {
-            const result = await axios.post('/chat/sendRateRequest',{chatId,rate })
+            const result = await axios.post(`${url}/chat/sendRateRequest`,{chatId,rate })
             setRes(JSON.stringify(result, null, 2 ))
         }catch (e) {
             setRes(JSON.stringify(e, null, 2 ))

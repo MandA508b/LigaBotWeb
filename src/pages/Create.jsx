@@ -1,4 +1,3 @@
-
 import '../App.css';
 import {useEffect, useState} from "react";
 import {useTelegram} from "../hooks/useTelegram";
@@ -81,9 +80,8 @@ function Create({url}) {
         }catch (e) {
             setError(JSON.stringify(e, null, 2))
         }
-
-
     }
+
     if (isLoading) return <Typography>loading</Typography>
 
     return (

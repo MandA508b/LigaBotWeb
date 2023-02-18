@@ -23,9 +23,9 @@ function Create({url}) {
 
             setLoading(true)
             try {
-                //const res = await axios.get(`${url}/city/findAll`)
-                //setCities(res.data.cities)
-                //setCity(res.data.cities[0]?._id)
+                const res = await axios.get(`${url}/city/findAll`)
+                setCities(res.data.cities)
+                setCity(res.data.cities[0]?._id)
                 setSuccess(true)
             } catch (e) {
                 setError(JSON.stringify(e, null, 2))

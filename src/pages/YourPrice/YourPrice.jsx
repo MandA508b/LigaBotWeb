@@ -13,6 +13,7 @@ function YourPrice({url}) {
     },[])
     const [rate, setRate] = useState('');
     const [res, setRes] = useState('');
+    const [r, setR] = useState('');
 
     const location = useLocation()
 
@@ -24,7 +25,8 @@ function YourPrice({url}) {
         event.preventDefault();
         console.log(`Input value: ${rate}`);
         const {chatId, advertisementId} = queryString.parse(location.search)
-        setRes(JSON.stringify({chatId, advertisementId}))
+        setR(JSON.stringify({chatId, advertisementId}))
+        console.log(JSON.stringify({chatId, advertisementId}))
         try {
             const result = await axios.post(`${url}/chat/sendRateRequest`,{chatId,advertisementId,rate })
             setRes(JSON.stringify(result, null, 2 ))
@@ -52,7 +54,7 @@ function YourPrice({url}) {
                 Submit
             </button>
             <p>
-                {res}
+                {r + res}
             </p>
         </form>
     );

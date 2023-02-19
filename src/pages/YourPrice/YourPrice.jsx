@@ -22,11 +22,11 @@ function YourPrice({url}) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // do something with the form data
         console.log(`Input value: ${rate}`);
-        const {chatId} = queryString.parse(location.search)
+        const {chatId, advertisementId} = queryString.parse(location.search)
+        setRes(JSON.stringify({chatId, advertisementId}))
         try {
-            const result = await axios.post(`${url}/chat/sendRateRequest`,{chatId,rate })
+            const result = await axios.post(`${url}/chat/sendRateRequest`,{chatId,advertisementId,rate })
             setRes(JSON.stringify(result, null, 2 ))
         }catch (e) {
             setRes(JSON.stringify(e, null, 2 ))

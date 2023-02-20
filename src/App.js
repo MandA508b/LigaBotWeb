@@ -9,12 +9,13 @@ import Redact from "./pages/Redact";
 import YourPrice from "./pages/YourPrice/YourPrice";
 
 const url = 'https://ligabotv2.onrender.com'
+const chat_url = 'https://chat-server-zsxa.onrender.com'
 const App = () => {
     return (
         <Routes>
             <Route path={'/'} element={<Create url={url}/>}/>
             <Route path={'/redact/:id'} element={<Redact url={url}/>}/>
-            <Route path={'/rate'} element={<YourPrice url={url}/>}/>
+            <Route path={'/rate'} element={<YourPrice url={chat_url}/>}/>
         </Routes>
     );
 };

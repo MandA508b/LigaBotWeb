@@ -28,7 +28,7 @@ function YourPrice({url}) {
         setR(JSON.stringify({chatId, advertisementId}))
         console.log(JSON.stringify({chatId, advertisementId}))
         try {
-            const result = await axios.post(`${url}/sendRateRequest`,{chatId,advertisementId,rate })
+            const result = await axios.post(`${url}/chat/sendRateRequest`,{chatId,advertisementId,rate })
             setRes(JSON.stringify(result, null, 2 ))
         }catch (e) {
             setRes(JSON.stringify(e, null, 2 ))

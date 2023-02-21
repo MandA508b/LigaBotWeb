@@ -45,6 +45,7 @@ function Create({url}) {
     const [percent, setPercent] = useState(5)
     const [deadline, setDeadline] = useState('1h')
     const [additionalInfo, setAdditionalInfo] = useState('')
+    const [disabled, setDisabled] = useState(false)
     const handleChangeType = e => setType(e.target.value)
     const handleChangeCity = e => setCity(e.target.value)
     const handleChangeAmount = e => setAmount(e.target.value)
@@ -52,7 +53,16 @@ function Create({url}) {
     const handleChangeIsPartly = e => setIsPartly(e.target.value)
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
-    const handleYourPrice = e => e.target.checked ? setPercent(0) : setPercent(5)
+
+    const handleYourPrice = e => {
+        if(e.target.checked){
+            setPercent(0)
+            setDisabled(true)
+        } else{
+            setPercent(5)
+            setDisabled(false)
+        }
+    }
 
     const handleSendData = async () => {
         const deadlineData = {
@@ -128,7 +138,7 @@ function Create({url}) {
                 <div className="form_container">
                     <label htmlFor="type">Тариф</label>
 
-                    <select className={'select'} onChange={handleChangePercent} value={percent}>
+                    <select disabled={disabled} className={'select'} onChange={handleChangePercent} value={percent}>
                         <option value={0.5}>0.5%</option>
                         <option value={1}>1%</option>
                         <option value={2}>2%</option>
@@ -138,7 +148,7 @@ function Create({url}) {
                 </div>
                 <div className="form_container">
                     <label htmlFor="percent">Ручне введення</label>
-                    <input className={'percent'} name={'percent'} type="number" value={percent} onChange={handleChangePercent}/>
+                    <input disabled={disabled} className={'percent'} name={'percent'} type="number" value={percent} onChange={handleChangePercent}/>
                 </div>
             </div>
             <div className="form_container yourprice">

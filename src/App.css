@@ -90,7 +90,6 @@ label{
 
 .review_question{
   display: flex;
-  flex-direction: column;
   text-align: center;
   gap: 8px;
 }
@@ -105,7 +104,10 @@ label{
   border: 1px solid #000;
   border-radius: 4px;
 }
-
+.review_form{
+  display: flex;
+  flex-direction: column;
+}
 .review_choose_active{
   background: blue;
   border:none;

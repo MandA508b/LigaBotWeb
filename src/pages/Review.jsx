@@ -3,16 +3,17 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import queryString from "query-string";
 import {useLocation} from "react-router-dom";
+import {useTelegram} from "../hooks/useTelegram";
 
 const Review = ({url}) => {
+    const { onClose} = useTelegram()
+
     const location = useLocation()
     const [checkbox, setCheckbox] = useState(false)
     const [teams, setTeams] = useState([])
     const [teamId2, setTeamId2] = useState('')
-    const [res, setRes] = useState({})
 
     useEffect(()=>{
-        console.log('ue')
         const fetchData = async ()=>{
             try{
                 const res = await axios.get(`${url}/teams/findAll`)
@@ -28,12 +29,12 @@ const Review = ({url}) => {
         const {teamId1} = queryString.parse(location.search)
         if(!!teamId2.length){
             try{
-                const req = await axios.put(`${url}/teams/addScore`,{teamId1, teamId2})
-                setRes(req)
+                await axios.put(`${url}/teams/addScore`,{teamId1, teamId2})
+
             }catch (e) {
-                setRes(e)
+                console.log(e)
             }
-        }else if(!teamId2.length && !checkbox) setRes({data:'send'})
+        }else if(!teamId2.length && !checkbox) onClose()
     }
     return (
         <div className='review'>
@@ -62,12 +63,14 @@ const Review = ({url}) => {
                     </div>
 
             }
-            <button onClick={handleSend} className={'close_btn'}>
-                Надіслати
-            </button>
-            <p>
-                {JSON.stringify(res, null, 4)}
-            </p>
+            <div className="buttons">
+                <button onClick={handleSend} className={'close_btn'}>
+                    Надіслати
+                </button>
+                <button className={'close_btn'} onClick={()=>onClose()}>
+                    Закрити
+                </button>
+            </div>
         </div>
     );
 };

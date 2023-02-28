@@ -90,6 +90,7 @@ label{
 
 .review_question{
   display: flex;
+  flex-direction: column;
   text-align: center;
   gap: 8px;
 }

@@ -33,7 +33,7 @@ function YourPrice({url}) {
         }catch (e) {
             setRes(JSON.stringify(e, null, 2 ))
         }
-        onClose()
+        //onClose()
         // reset form value
         setRate('');
     };

@@ -28,7 +28,7 @@ const Review = ({url}) => {
         const {teamId1} = queryString.parse(location.search)
         if(!!teamId2.length){
             try{
-                const req = await axios.post(`${url}/teams/addScore`,{teamId1, teamId2})
+                const req = await axios.put(`${url}/teams/addScore`,{teamId1, teamId2})
                 setRes(req)
             }catch (e) {
                 setRes(e)

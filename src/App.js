@@ -7,6 +7,7 @@ import {Route, Routes} from "react-router-dom";
 import Create from "./pages/Create";
 import Redact from "./pages/Redact";
 import YourPrice from "./pages/YourPrice/YourPrice";
+import Review from "./pages/Review";
 
 const url = 'https://ligabot.pp.ua'
 const chat_url = 'https://chat-server-zsxa.onrender.com'
@@ -16,6 +17,7 @@ const App = () => {
             <Route path={'/'} element={<Create url={url}/>}/>
             <Route path={'/redact/:id'} element={<Redact url={url}/>}/>
             <Route path={'/rate'} element={<YourPrice url={chat_url}/>}/>
+            <Route path={'/review'} element={<Review url={url}/>}/>
         </Routes>
     );
 };

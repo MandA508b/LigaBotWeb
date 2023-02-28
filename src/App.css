@@ -17,7 +17,7 @@ label{
   color:var(--tg-theme-hint-color);
   font-size: 12px;
 }
-.App{
+.App, .review{
   min-width:100vw;
   max-width:100vw;
   min-height:100vh;
@@ -73,6 +73,7 @@ label{
   display: flex;
   flex-direction: row-reverse;
   gap: 4px;
+  align-items: center;
 }
 
 
@@ -82,12 +83,33 @@ label{
   max-width: 200px;
 }
 
+.review{
+  padding-top: 20%;
+  gap: 40px;
+}
 
+.review_question{
+  display: flex;
+  text-align: center;
+  gap: 8px;
+}
 
+.review_text{
+  text-align: center;
+}
 
+.review_choose{
+  font-size: 18px;
+  padding: 4px;
+  border: 1px solid #000;
+  border-radius: 4px;
+}
 
-
-
+.review_choose_active{
+  background: blue;
+  border:none;
+  padding: 6px;
+}
 
 
 
@@ -102,3 +124,5 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+

@@ -17,7 +17,7 @@ const App = () => {
             <Route path={'/'} element={<Create url={url}/>}/>
             <Route path={'/redact/:id'} element={<Redact url={url}/>}/>
             <Route path={'/rate'} element={<YourPrice url={url}/>}/>
-            <Route path={'/review'} element={<Review url={url}/>}/>
+            <Route path={'/review/:team1'} element={<Review url={url}/>}/>
         </Routes>
     );
 };

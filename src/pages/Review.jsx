@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import Switch from '@mui/material/Switch';
-import {FormControlLabel, FormGroup} from "@mui/material";
 
 const Review = ({url}) => {
     const [checkbox, setCheckbox] = useState(false)
@@ -31,7 +29,6 @@ const Review = ({url}) => {
             <div className={'review_question'}>
                 <span onClick={()=>setCheckbox(false)} className={`review_choose ${!checkbox ? 'review_choose_active' : ''}`}>Ні</span>
                 <span onClick={()=>setCheckbox(true)} className={`review_choose ${checkbox ? 'review_choose_active' : ''}`}>Так</span>
-
             </div>
 
             {

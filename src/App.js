@@ -8,6 +8,7 @@ import Create from "./pages/Create";
 import Redact from "./pages/Redact";
 import YourPrice from "./pages/YourPrice/YourPrice";
 import Review from "./pages/Review";
+import Error404 from "./components/Error404";
 
 const url = 'https://ligabot.pp.ua'
 const chat_url = 'https://chat-server-zsxa.onrender.com'
@@ -18,6 +19,7 @@ const App = () => {
             <Route path={'/redact/:id'} element={<Redact url={url}/>}/>
             <Route path={'/rate'} element={<YourPrice url={url}/>}/>
             <Route path={'/review/:team1'} element={<Review url={url}/>}/>
+            <Route path={'*'} element={<Error404/>}/>
         </Routes>
     );
 };

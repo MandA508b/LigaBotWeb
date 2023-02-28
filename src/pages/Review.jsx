@@ -8,6 +8,7 @@ const Review = ({url}) => {
     const location = useLocation()
     const [checkbox, setCheckbox] = useState(false)
     const [teams, setTeams] = useState([])
+    const [teamId2, setTeamId2] = useState('')
     const [res, setRes] = useState({})
 
     useEffect(()=>{
@@ -25,7 +26,14 @@ const Review = ({url}) => {
     },[])
     const handleSend = async ()=>{
         const {teamId1} = queryString.parse(location.search)
-        setRes({teamId1})
+        if(!!teamId2.length){
+            try{
+                const req = await axios.post(`${url}/teams/addScore`,{teamId1, teamId2})
+                setRes(req)
+            }catch (e) {
+                setRes(e)
+            }
+        }else if(!teamId2.length && !checkbox) setRes({data:'send'})
     }
     return (
         <div className='review'>
@@ -36,7 +44,10 @@ const Review = ({url}) => {
                 Чи закрили ви оголошення за допомогою учасника команди?
             </h3>
             <div className={'review_question'}>
-                <span onClick={()=>setCheckbox(false)} className={`review_choose ${!checkbox ? 'review_choose_active' : ''}`}>Ні</span>
+                <span onClick={()=> {
+                    setTeamId2('')
+                    setCheckbox(false)
+                }} className={`review_choose ${!checkbox ? 'review_choose_active' : ''}`}>Ні</span>
                 <span onClick={()=>setCheckbox(true)} className={`review_choose ${checkbox ? 'review_choose_active' : ''}`}>Так</span>
             </div>
 
@@ -44,7 +55,7 @@ const Review = ({url}) => {
                 !checkbox ? null :
                     <div className={'review_form'}>
                         <label>Вибір команди</label>
-                        <select className={'select'} name="" id="">
+                        <select className={'select'} name="" id="" value={teamId2} onChange={e=>setTeamId2(e.target.value)}>
                             {
                                 teams?.map(team=><option value={team.name}>{team.name}</option>)}
                         </select>

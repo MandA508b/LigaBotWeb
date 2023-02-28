@@ -30,7 +30,7 @@ const Review = ({url}) => {
         if(!!teamId2.length){
             try{
                 await axios.put(`${url}/teams/addScore`,{teamId1, teamId2})
-
+                onClose()
             }catch (e) {
                 console.log(e)
             }

@@ -57,7 +57,7 @@ const Review = ({url}) => {
                         <label>Вибір команди</label>
                         <select className={'select'} name="" id="" value={teamId2} onChange={e=>setTeamId2(e.target.value)}>
                             {
-                                teams?.map(team=><option value={team.name}>{team.name}</option>)}
+                                teams?.map(team=><option value={team._id}>{team.name}</option>)}
                         </select>
                     </div>
 

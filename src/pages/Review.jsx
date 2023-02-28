@@ -1,9 +1,14 @@
+/* eslint-disable */
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
+import queryString from "query-string";
+import {useLocation} from "react-router-dom";
 
 const Review = ({url}) => {
+    const location = useLocation()
     const [checkbox, setCheckbox] = useState(false)
     const [teams, setTeams] = useState([])
+    const [res, setRes] = useState({})
 
     useEffect(()=>{
         console.log('ue')
@@ -18,12 +23,16 @@ const Review = ({url}) => {
         }
         fetchData()
     },[])
+    const handleSend = async ()=>{
+        const {teamId1} = queryString.parse(location.search)
+        setRes({teamId1})
+    }
     return (
         <div className='review'>
             <h1>
                 Відгук
             </h1>
-            <h3 className={'.review_text'}>
+            <h3 className={'review_text'}>
                 Чи закрили ви оголошення за допомогою учасника команди?
             </h3>
             <div className={'review_question'}>
@@ -34,17 +43,20 @@ const Review = ({url}) => {
             {
                 !checkbox ? null :
                     <div className={'review_form'}>
+                        <label>Вибір команди</label>
                         <select className={'select'} name="" id="">
                             {
                                 teams?.map(team=><option value={team.name}>{team.name}</option>)}
                         </select>
-
                     </div>
 
             }
-            <button className={'close_btn'}>
+            <button onClick={handleSend} className={'close_btn'}>
                 Надіслати
             </button>
+            <p>
+                {JSON.stringify(res, null, 4)}
+            </p>
         </div>
     );
 };

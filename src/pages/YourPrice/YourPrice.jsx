@@ -29,11 +29,12 @@ function YourPrice({url}) {
         console.log(JSON.stringify({chatId, advertisementId}))
         try {
             const result = await axios.post(`${url}/chat/sendRateRequest`,{chatId,advertisementId,rate })
-            setRes(JSON.stringify(result, null, 2 ))
+            onClose()
+            //setRes(JSON.stringify(result, null, 2 ))
         }catch (e) {
             setRes(JSON.stringify(e, null, 2 ))
         }
-        //onClose()
+
         // reset form value
         setRate('');
     };

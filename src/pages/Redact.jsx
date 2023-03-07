@@ -1,4 +1,3 @@
-
 import '../App.css';
 import {useEffect, useState} from "react";
 import {useTelegram} from "../hooks/useTelegram";
@@ -27,7 +26,20 @@ function Redact({url}) {
     const handleChangeType = e => setType(e.target.value)
     const handleChangeCity = e => setCity(e.target.value)
     const handleChangeAmount = e => setAmount(e.target.value)
-    const handleChangePercent = e => setPercent(e.target.value)
+    const [manualPercent, setManualPercent] = useState(0.1)
+
+    const [percentInputType, setPercentInputType] = useState(true)
+
+    const [disabled, setDisabled] = useState(false)
+
+    const handleChangePercent = e => {
+        const value = e.target.value
+        if (value === "Ввести") setPercentInputType(false)
+        setPercent(value)
+        console.log(value, percentInputType)
+    }
+    const handleChangeManualPercent = e => setManualPercent(e.target.value)
+    const handleYourPrice = e => setDisabled(e.target.checked)
     const handleChangeIsPartly = e => setIsPartly(e.target.value)
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
@@ -39,7 +51,7 @@ function Redact({url}) {
             try {
                 const advertisementId = location.pathname.split('/').slice(-1)[0]
                 const res = await axios.get(`${url}/city/findAll`)
-                const adv = await axios.post(`${url}/advertisement/findById`,{advertisementId})
+                const adv = await axios.post(`${url}/advertisement/findById`, {advertisementId})
                 setAdver(adv["data"]["advertisement"])
                 setAmount(adv["data"]["advertisement"]["total"])
                 setType(adv["data"]["advertisement"]["type"])
@@ -64,19 +76,27 @@ function Redact({url}) {
     }, [])
 
     const handleSendData = async () => {
-        try{
-            console.log(adver)
-            const adv = {...adver, total:amount, rate:percent, part:isPartly, deadline,type, extraInfo:additionalInfo,cityId:city}
-            await
-            console.log(adv)
+        console.log({
+            rate: percentInputType ? percent : manualPercent,
+        })
+        try {
+            const adv = {
+                ...adver,
+                total: amount,
+                rate: percentInputType ? percent : manualPercent,
+                part: isPartly,
+                deadline,
+                type,
+                extraInfo: additionalInfo,
+                cityId: city
+            }
             const advertisementId = location.pathname.split('/').slice(-1)[0]
 
-            const res = await axios.put(`${url}/advertisement/redact`,{advertisementId,data:adv})
-            setError(JSON.stringify(res,null,2))
+            const res = await axios.put(`${url}/advertisement/redact`, {advertisementId, data: adv})
             setTitle("Оголошення успішно додане")
             tg.sendData(JSON.stringify(res))
             onClose()
-        }catch (e) {
+        } catch (e) {
             setError(JSON.stringify(e, null, 2))
         }
 
@@ -121,17 +141,49 @@ function Redact({url}) {
             <div className={'container'}>
 
 
-            <div className="form_container">
-                <label style={{fontSize:'8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
-                <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
-            </div>
+                <div className="form_container">
+                    <label style={{fontSize: '8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
+                    <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+                </div>
 
             </div>
-            <div className="form_container">
-                <label htmlFor="percent">Тариф, %</label>
+            <div className="container">
+                <div className="form_container">
+                    <label htmlFor="type">Тариф</label>
 
-                <input name={'percent'} type="number" value={percent} onChange={handleChangePercent}/>
+                    <select disabled={Boolean(disabled || !percentInputType)} className={'select'}
+                            onChange={handleChangePercent} value={percent}>
+                        <option value={0.5}>0.5%</option>
+                        <option value={1}>1%</option>
+                        <option value={2}>2%</option>
+                        <option value={5}>5%</option>
+                        <option value="Ввести">Ввести</option>
+                    </select>
 
+                </div>
+                {
+                    !percentInputType &&
+
+                    <div className="form_container">
+                        <label htmlFor="percent">Введіть тариф, %</label>
+                        <span className={'manualPercent'}>
+                            <input disabled={disabled} className={'percent'} name={'percent'}
+                                   type="number" value={manualPercent}
+                                   onChange={handleChangeManualPercent}/>
+                            <span onClick={() => {
+                                setPercentInputType(true)
+                                setPercent(0.5)
+                            }}>&#x2715;</span>
+                        </span>
+                    </div>
+                }
+
+            </div>
+            <div className="form_container yourprice">
+                <label style={{textAlign: 'center'}} htmlFor="type">Дати змогу запропоновувати ціну користувачам
+                    ?</label>
+
+                <input type="checkbox" onChange={e => handleYourPrice(e)}/>
             </div>
             <div className="form_container">
                 <label htmlFor="type">Термін</label>
@@ -148,7 +200,7 @@ function Redact({url}) {
             <button className={'close_btn'} onClick={handleSendData}>Змінити</button>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
             <p>
-                { error.length ? error : ''}
+                {error.length ? error : ''}
             </p>
         </div>
     );

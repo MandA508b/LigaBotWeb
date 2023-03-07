@@ -7,58 +7,56 @@ import axios from "axios";
 import {useTelegram} from "../../hooks/useTelegram";
 
 function YourPrice({url}) {
-    const {tg, user, onClose} = useTelegram()
+    const {tg,  onClose} = useTelegram()
     useEffect(()=>{
         tg.ready()
     },[])
     const [rate, setRate] = useState('');
     const [res, setRes] = useState('');
-    const [r, setR] = useState('');
 
     const location = useLocation()
 
-    const handleInputChange = (event) => {
-        setRate(event.target.value);
-    };
+    const handleInputChange = (e) => setRate(e.target.value);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(`Input value: ${rate}`);
+        if (!rate.length) return;
+
         const {chatId, advertisementId} = queryString.parse(location.search)
-        setR(JSON.stringify({chatId, advertisementId}))
-        console.log(JSON.stringify({chatId, advertisementId}))
         try {
-            const result = await axios.post(`${url}/chat/sendRateRequest`,{chatId,advertisementId,rate })
+            await axios.post(`${url}/chat/sendRateRequest`,{chatId,advertisementId,rate })
             onClose()
-            //setRes(JSON.stringify(result, null, 2 ))
         }catch (e) {
             setRes(JSON.stringify(e, null, 2 ))
         }
-
-        // reset form value
         setRate('');
     };
 
     return (
-        <form onSubmit={handleSubmit} className="form-container">
-            <label htmlFor="input-field" className="input-label">
-                Ваша Ціна
-            </label>
-            <input
-                type="number"
-                id="input-field"
-                value={rate}
-                onChange={handleInputChange}
-                className="input-field"
+        <div className={'App'}>
+            <form onSubmit={handleSubmit} className="form-container">
+                <label htmlFor="input-field" className="input-label">
+                    Запропонуйте ваш тариф, %
+                </label>
+                <input
+                    type="number"
+                    id="input-field"
+                    value={rate}
+                    onChange={handleInputChange}
+                    className="input-field"
+                    placeholder={'0.5'}
 
-            />
-            <button type="submit" className="submit-button">
-                Submit
-            </button>
-            <p>
-                {r + res}
-            </p>
-        </form>
+                />
+                <button type="submit" className="submit-button">
+                    Підтвердити
+                </button>
+                <p>
+                    { res}
+                </p>
+            </form>
+
+        </div>
     );
 }
 

@@ -15,7 +15,6 @@ function Create({url}) {
     const {tg, user, onClose} = useTelegram()
 
 
-
     useEffect(() => {
 
         const fetchData = async () => {
@@ -43,26 +42,38 @@ function Create({url}) {
     const [amount, setAmount] = useState(10)
     const [isPartly, setIsPartly] = useState(0)
     const [percent, setPercent] = useState(5)
+    const [manualPercent, setManualPercent] = useState(0.1)
+    const [percentInputType, setPercentInputType] = useState(true)
     const [deadline, setDeadline] = useState('1h')
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [disabled, setDisabled] = useState(false)
     const handleChangeType = e => setType(e.target.value)
     const handleChangeCity = e => setCity(e.target.value)
     const handleChangeAmount = e => setAmount(e.target.value)
-    const handleChangePercent = e => setPercent(e.target.value)
+    const handleChangePercent = e => {
+        const value = e.target.value
+        if (value === "Ввести") setPercentInputType(false)
+        setPercent(value)
+        console.log(value, percentInputType)
+    }
+    const handleChangeManualPercent = e => setManualPercent(e.target.value)
     const handleChangeIsPartly = e => setIsPartly(e.target.value)
     const handleChangeDeadline = e => setDeadline(e.target.value)
     const handleChangeAdditionalInfo = e => setAdditionalInfo(e.target.value)
 
     const handleYourPrice = e => {
+        setDisabled(e.target.checked)
         if(e.target.checked){
+            setManualPercent(0)
             setPercent(0)
-            setDisabled(true)
-        } else{
-            setPercent(5)
-            setDisabled(false)
+        }else {
+            setPercent(0.5)
+            setManualPercent(0.5)
         }
+        console.log(manualPercent, percent)
     }
+
+
 
     const handleSendData = async () => {
         const deadlineData = {
@@ -71,23 +82,23 @@ function Create({url}) {
             '48h': dayjs().add(48, 'hour').format("DD.MM.YYYY HH:mm"),
             '78h': dayjs().add(72, 'hour').format("DD.MM.YYYY HH:mm"),
         }
-        try{
+        try {
             const resUser = await axios.post(`${url}/user/getUserByTelegramId`, {telegramId: user?.id})
             const adv = {
                 userId: resUser.data.user._id,
-                leagueId:resUser.data.user.leagueId,
+                leagueId: resUser.data.user.leagueId,
                 type,
                 cityId: city,
                 total: amount,
                 part: isPartly,
-                rate: percent,
+                rate: percentInputType ? percent : manualPercent,
                 deadline: deadlineData[deadline],
                 extraInfo: additionalInfo,
             }
-            await axios.post(`${url}/advertisement/create`,adv)
+            await axios.post(`${url}/advertisement/create`, adv)
             setTitle("Оголошення успішно додане")
             onClose()
-        }catch (e) {
+        } catch (e) {
             setError(JSON.stringify(e, null, 2))
         }
     }
@@ -122,7 +133,6 @@ function Create({url}) {
             </div>
 
 
-
             <div className="form_container">
                 <label htmlFor="amount">Ціна, $</label>
 
@@ -131,30 +141,45 @@ function Create({url}) {
             </div>
 
             <div className="form_container">
-                <label style={{fontSize:'8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
+                <label style={{fontSize: '8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
                 <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
             </div>
             <div className="container">
                 <div className="form_container">
                     <label htmlFor="type">Тариф</label>
 
-                    <select disabled={disabled} className={'select'} onChange={handleChangePercent} value={percent}>
+                    <select disabled={Boolean(disabled || !percentInputType)} className={'select'}
+                            onChange={handleChangePercent} value={percent}>
                         <option value={0.5}>0.5%</option>
                         <option value={1}>1%</option>
                         <option value={2}>2%</option>
                         <option value={5}>5%</option>
+                        <option value="Ввести">Ввести</option>
                     </select>
 
                 </div>
-                <div className="form_container">
-                    <label htmlFor="percent">Ручне введення</label>
-                    <input disabled={disabled} className={'percent'} name={'percent'} type="number" value={percent} onChange={handleChangePercent}/>
-                </div>
+                {
+                    !percentInputType &&
+
+                    <div className="form_container">
+                        <label htmlFor="percent">Введіть тариф, %</label>
+                        <span className={'manualPercent'}>
+                            <input disabled={disabled} className={'percent'} name={'percent'}
+                                   type="number" value={manualPercent}
+                                   onChange={handleChangeManualPercent}/>
+                            <span onClick={()=> {
+                                setPercentInputType(true)
+                                setPercent(0.5)
+                            }}>&#x2715;</span>
+                        </span>
+                    </div>
+                }
+
             </div>
             <div className="form_container yourprice">
-                <label htmlFor="type">Запропонуйте свою ціну</label>
+                <label style={{textAlign:'center'}} htmlFor="type">Дати змогу запропоновувати ціну користувачам ?</label>
 
-                <input type="checkbox" onChange={e=>handleYourPrice(e)}/>
+                <input type="checkbox" onChange={e => handleYourPrice(e)}/>
             </div>
 
             <div className="form_container">
@@ -180,7 +205,7 @@ function Create({url}) {
             </div>
 
             <p>
-                { error.length ? error : ''}
+                {error.length ? error : ''}
             </p>
         </div>
     );

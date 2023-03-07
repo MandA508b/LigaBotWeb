@@ -10,7 +10,7 @@ import YourPrice from "./pages/YourPrice/YourPrice";
 import Review from "./pages/Review";
 import Error404 from "./components/Error404";
 
-const url = 'https://ligabot.pp.ua'
+const url = 'https://www.ligabot.pp.ua'
 const App = () => {
     return (
         <Routes>

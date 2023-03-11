@@ -134,7 +134,7 @@ function Redact({url}) {
             <div className="form_container">
                 <label htmlFor="amount">Ціна, $</label>
 
-                <input name={'amount'} type="number" value={amount} onChange={handleChangeAmount}/>
+                <input className='input__full' name={'amount'} type="number" value={amount} onChange={handleChangeAmount}/>
 
             </div>
 
@@ -143,7 +143,7 @@ function Redact({url}) {
 
                 <div className="form_container">
                     <label style={{fontSize: '8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
-                    <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+                    <input className='input__full' type='number' value={isPartly} onChange={handleChangeIsPartly}/>
                 </div>
 
             </div>
@@ -157,7 +157,7 @@ function Redact({url}) {
                         <option value={1}>1%</option>
                         <option value={2}>2%</option>
                         <option value={5}>5%</option>
-                        <option value="Ввести">Ввести</option>
+                        <option value="Ввести">Ввести вручну</option>
                     </select>
 
                 </div>
@@ -188,7 +188,7 @@ function Redact({url}) {
             <div className="form_container">
                 <label htmlFor="type">Термін</label>
 
-                <input type={'text'} value={deadline} onChange={handleChangeDeadline}/>
+                <input className='input__full' type={'text'} value={deadline} onChange={handleChangeDeadline}/>
             </div>
             <div className="form_container">
                 <label htmlFor="type">Додаткова Інформація</label>
@@ -197,10 +197,13 @@ function Redact({url}) {
                           onChange={handleChangeAdditionalInfo}/>
 
             </div>
+            <div className={'buttons'}>
+
             <button className={'close_btn'} onClick={handleSendData}>Змінити</button>
             <button className={'close_btn'} onClick={onClose}>Закрити</button>
+            </div>
             <p>
-                {error.length ? error : ''}
+                {error}
             </p>
         </div>
     );

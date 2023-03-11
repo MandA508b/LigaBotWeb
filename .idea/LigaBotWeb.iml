@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ttm" />
     <orderEntry type="module" module-name="simple-analytic-service" />
+    <orderEntry type="module" module-name="client-chat" />
   </component>
 </module>

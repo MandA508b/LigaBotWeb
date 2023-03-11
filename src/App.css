@@ -60,6 +60,10 @@ body{
   font-family: 'Roboto', sans-serif;
   color: var(--tg-theme-text-color);
 }
+body, .App ,.container, .form_container{
+  overflow: hidden;
+
+}
 label{
   color:var(--tg-theme-hint-color);
   font-size: 12px;
@@ -82,17 +86,18 @@ h1{
   gap:10px;
   background: var(--tg-theme-bg-color);
 }
+.container, .form_container{
+  width: 270px !important;
+}
 .container{
   display: flex;
   justify-content: space-between;
-  width: 200px;
 
   gap: 16px;
 }
 .form_container{
   display: flex;
   flex-direction: column;
-  width: 200px;
 }
 
 .buttons{
@@ -118,6 +123,10 @@ h1{
   font-family: inherit;
   font-size: 16px;
   transition: all 150ms ease;
+}
+
+.input__full{
+  padding: 7px 70px 7px 7px;
 }
 .percent{
   width: 100px;

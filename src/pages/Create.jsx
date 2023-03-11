@@ -136,13 +136,13 @@ function Create({url}) {
             <div className="form_container">
                 <label htmlFor="amount">Ціна, $</label>
 
-                <input name={'amount'} type="number" value={amount} onChange={handleChangeAmount}/>
+                <input className='input__full' name={'amount'} type="number" value={amount} onChange={handleChangeAmount}/>
 
             </div>
 
             <div className="form_container">
                 <label style={{fontSize: '8px'}}>Введіть частину(якщо одна частина, то введіть 0)</label>
-                <input type='number' value={isPartly} onChange={handleChangeIsPartly}/>
+                <input className='input__full' type='number' value={isPartly} onChange={handleChangeIsPartly}/>
             </div>
             <div className="container">
                 <div className="form_container">
@@ -154,7 +154,7 @@ function Create({url}) {
                         <option value={1}>1%</option>
                         <option value={2}>2%</option>
                         <option value={5}>5%</option>
-                        <option value="Ввести">Ввести</option>
+                        <option value="Ввести">Ввести вручну</option>
                     </select>
 
                 </div>
